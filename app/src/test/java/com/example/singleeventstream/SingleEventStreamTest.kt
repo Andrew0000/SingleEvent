@@ -63,4 +63,30 @@ class SingleEventStreamTest {
             result.toIntArray()
         )
     }
+
+    @Test
+    fun `When events sent and collected second time - they are received once`() = runTest {
+        val result = mutableListOf<Int>()
+        val job1 = launch(asyncDispatcher) {
+            stream.collect { result += it }
+        }
+        stream.value = 1
+        stream.value = 2
+        stream.value = 3
+
+        asyncDispatcher.scheduler.advanceUntilIdle()
+        job1.cancel()
+
+        val job2 = launch(asyncDispatcher) {
+            stream.collect { result += it }
+        }
+
+        asyncDispatcher.scheduler.advanceUntilIdle()
+        job2.cancel()
+
+        assertArrayEquals(
+            intArrayOf(1, 2, 3),
+            result.toIntArray()
+        )
+    }
 }
