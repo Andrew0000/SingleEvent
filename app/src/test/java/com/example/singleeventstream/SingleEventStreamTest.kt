@@ -14,21 +14,21 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class SingleEventStreamTest {
 
-    private val asyncDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = UnconfinedTestDispatcher()
 
-    private val stream = SingleEventStream<Int>(CoroutineScope(asyncDispatcher))
+    private val stream = SingleEventStream<Int>(CoroutineScope(testDispatcher))
 
     @Test
     fun `When events sent - they are received`() = runTest {
         val result = mutableListOf<Int>()
-        val job1 = launch(asyncDispatcher) {
+        val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
         stream.value = 1
         stream.value = 2
         stream.value = 3
 
-        asyncDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
 
         assertArrayEquals(
@@ -40,25 +40,25 @@ class SingleEventStreamTest {
     @Test
     fun `When events sent but collected later - they are received`() = runTest {
         val result = mutableListOf<Int>()
-        val job1 = launch(asyncDispatcher) {
+        val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
         stream.value = 1
         stream.value = 2
         stream.value = 3
 
-        asyncDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
 
         stream.value = 4
         stream.value = 5
         stream.value = 6
 
-        val job2 = launch(asyncDispatcher) {
+        val job2 = launch(testDispatcher) {
             stream.collect { result += it }
         }
 
-        asyncDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         job2.cancel()
 
         assertArrayEquals(
@@ -70,21 +70,21 @@ class SingleEventStreamTest {
     @Test
     fun `When events sent and collected second time - they are received once`() = runTest {
         val result = mutableListOf<Int>()
-        val job1 = launch(asyncDispatcher) {
+        val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
         stream.value = 1
         stream.value = 2
         stream.value = 3
 
-        asyncDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
 
-        val job2 = launch(asyncDispatcher) {
+        val job2 = launch(testDispatcher) {
             stream.collect { result += it }
         }
 
-        asyncDispatcher.scheduler.advanceUntilIdle()
+        testDispatcher.scheduler.advanceUntilIdle()
         job2.cancel()
 
         assertArrayEquals(
@@ -106,7 +106,7 @@ class SingleEventStreamTest {
 
             stream.value = 1
             stream.value = 2
-            val job1 = launch(asyncDispatcher) {
+            val job1 = launch(testDispatcher) {
                 stream.collect { result += it }
             }
             launch(asyncDispatcher2) {
@@ -117,7 +117,7 @@ class SingleEventStreamTest {
 
             job1.cancel()
 
-            val job2 = launch(asyncDispatcher) {
+            val job2 = launch(testDispatcher) {
                 stream.collect { result += it }
             }
 
