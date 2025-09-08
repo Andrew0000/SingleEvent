@@ -1,5 +1,13 @@
 Implementation of the "One-Time Event" pattern for Android and Kotlin Multiplatform.  
 
+**History of the question and other solutions**  
+Why Channels may be not reliable:  
+https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
+https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
+
+Google's approach (explicitly consume events):  
+https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates  
+
 **SingleEventStream**  
 Key features:
 - It is guaranteed that a pushed even will not be lost.
@@ -38,8 +46,3 @@ LaunchedEffect(Unit) {
     }
 }
 ```
-
-History of the question and other solutions:  
-https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
-https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
-https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates  
