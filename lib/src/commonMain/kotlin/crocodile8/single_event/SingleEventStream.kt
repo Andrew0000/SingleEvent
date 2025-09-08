@@ -1,4 +1,4 @@
-package com.example.singleeventstream
+package crocodile8.single_event
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

@@ -1,15 +1,16 @@
-package com.example.singleeventstream
+package crocodile8.single_event
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertArrayEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SingleEventStreamTest {
@@ -31,9 +32,9 @@ class SingleEventStreamTest {
         testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
 
-        assertArrayEquals(
-            intArrayOf(1, 2, 3),
-            result.toIntArray()
+        assertEquals(
+            listOf(1, 2, 3),
+            result.sorted()
         )
     }
 
@@ -61,9 +62,9 @@ class SingleEventStreamTest {
         testDispatcher.scheduler.advanceUntilIdle()
         job2.cancel()
 
-        assertArrayEquals(
-            intArrayOf(1, 2, 3, 4, 5, 6),
-            result.toIntArray()
+        assertEquals(
+            listOf(1, 2, 3, 4, 5, 6),
+            result.sorted()
         )
     }
 
@@ -87,9 +88,9 @@ class SingleEventStreamTest {
         testDispatcher.scheduler.advanceUntilIdle()
         job2.cancel()
 
-        assertArrayEquals(
-            intArrayOf(1, 2, 3),
-            result.toIntArray()
+        assertEquals(
+            listOf(1, 2, 3),
+            result.sorted()
         )
     }
 
@@ -132,9 +133,9 @@ class SingleEventStreamTest {
             }
             job2.cancelAndJoin()
 
-            assertArrayEquals(
-                intArrayOf(1, 2, 3, 4, 5, 6),
-                result.sorted().toIntArray()
+            assertEquals(
+                listOf(1, 2, 3, 4, 5, 6),
+                result.sorted()
             )
         }
     }
