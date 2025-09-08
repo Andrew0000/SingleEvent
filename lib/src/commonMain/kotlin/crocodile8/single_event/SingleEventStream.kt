@@ -87,7 +87,3 @@ class SingleEventStream<T>(
 fun <T> SingleEventStream<T>.asCollector(): SingleEventCollector<T> =
     this
 
-interface SingleEventCollector<T> {
-
-    suspend fun collect(onEvent: (T) -> Unit)
-}
