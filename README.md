@@ -1,7 +1,7 @@
 Implementation of the "One-Time Event" pattern for Android and Kotlin Multiplatform.  
 
 **History of the question and other solutions**  
-Why Channels may be not reliable:  
+Why Channels may be unreliable:  
 https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
 https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
 
