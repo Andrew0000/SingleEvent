@@ -26,7 +26,7 @@ import kotlinx.coroutines.sync.withLock
  */
 class SingleEventStream<T>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : SingleEventCollector<T> {
+) : SingleEventQueue<T> {
 
     private val signal: MutableStateFlow<Int> = MutableStateFlow(0)
 
@@ -41,7 +41,7 @@ class SingleEventStream<T>(
      *
      * Getter always returns null.
      */
-    var value: T?
+    override var value: T?
         set(value) {
             if (value != null) {
                 scope.launch {
@@ -57,7 +57,7 @@ class SingleEventStream<T>(
     /**
      * Adds a new value to the underlying event queue. See [value].
      */
-    fun push(newValue: T) {
+    override fun push(newValue: T) {
         value = newValue
     }
 
