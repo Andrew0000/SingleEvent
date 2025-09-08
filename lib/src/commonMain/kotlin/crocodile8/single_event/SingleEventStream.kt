@@ -14,9 +14,10 @@ import kotlinx.coroutines.sync.withLock
  * Key features:
  * - It is guaranteed that a pushed even will not be lost.
  * - Many events may be queued until someone collects them.
- * - New value can bu pushed from any thread / dispatcher.
+ * - New event can bu pushed from any thread / dispatcher.
  * - Collection may be happening from any thread / dispatcher.
- * - One collector at a time is the appropriate usage. Sharing is not reliably supported.
+ * - Order of events is no guaranteed if pushed from multiple threads / dispatchers.
+ * - Only 1 collector at a time is supported.
  *
  * History of the question and other solutions:
  *
@@ -39,7 +40,7 @@ class SingleEventStream<T>(
      * Adds a new value to the underlying event queue.
      * This operation may be asynchronous, it depends on the [scope].
      *
-     * Getting the value is not supported.
+     * Getter always returns null.
      */
     var value: T?
         set(value) {
@@ -55,18 +56,19 @@ class SingleEventStream<T>(
         get() = null
 
     /**
-     * See [value]
+     * Adds a new value to the underlying event queue. See [value].
      */
     fun push(newValue: T) {
         value = newValue
     }
 
-    // Note: the collector function (argument) must be not suspendable to avoid the possibility
-    // of additional suspension windows where the collection may be cancelled.
-    // Don't use FlowCollector.
     /**
      * Listens and automatically consumes events.
      * Only 1 collection at a time is allowed.
+     *
+     * Note: the collector function (argument) must be not suspendable to avoid the possibility
+     * of additional suspension windows where the collection may be cancelled,
+     * so don't use FlowCollector.
      */
     override suspend fun collect(onEvent: (T) -> Unit) {
         signal.collect {
@@ -82,8 +84,7 @@ class SingleEventStream<T>(
 }
 
 /**
- * Provides the immutable version: [SingleEventCollector].
+ * Provides a read-only version: [SingleEventCollector].
  */
-fun <T> SingleEventStream<T>.asCollector(): SingleEventCollector<T> =
+fun <T> SingleEventStream<T>.asReadOnly(): SingleEventCollector<T> =
     this
-
