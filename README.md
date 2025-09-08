@@ -42,7 +42,7 @@ val lifecycleOwner = LocalLifecycleOwner.current
 LaunchedEffect(Unit) {
     lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         viewModel.events.collect {
-            // Handle the event here
+            // Handle the events here
         }
     }
 }
