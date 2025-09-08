@@ -1,4 +1,4 @@
-Implementation of the "One-Time Event" pattern for Android ond Kotlin Multiplatform.
+Implementation of the "One-Time Event" pattern for Android and Kotlin Multiplatform.  
 
 **SingleEventStream**  
 Key features:
@@ -13,7 +13,9 @@ Limitations:
 
 How and why it works:  
 Events are stored in the internal queue. Collector automatically and atomically consumes the queue.
+It's partially similar to what Google recommends (notify about the consumption) but automatic.
 
 History of the question and other solutions:  
 https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
 https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
+https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates  
