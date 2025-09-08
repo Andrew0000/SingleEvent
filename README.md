@@ -25,7 +25,8 @@ It's partially similar to what Google recommends (notify about the consumption) 
 
 **Usage example**  
 The library is not published. Basically it's just 1 class so you can copy it to your project.  
-Typically in ViewModel:
+https://github.com/Andrew0000/single_event/blob/main/lib/src/commonMain/kotlin/crocodile8/single_event/SingleEventStream.kt  
+Typically in ViewModel:  
 ```
 private val _events = SingleEventStream<Any>(viewModelScope)
 val events = _events.asReadOnly()
@@ -35,7 +36,7 @@ fun onClick() {
 }
 ```
 
-Typically in a Composable:
+Typically in a Composable:  
 ```
 val lifecycleOwner = LocalLifecycleOwner.current
 LaunchedEffect(Unit) {
