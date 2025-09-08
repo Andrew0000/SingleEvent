@@ -7,8 +7,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-//TODO make the queue limited via a constructor parameter.
-
 /**
  * Implementation of the "One-Time Event" pattern.
  * Key features:
@@ -32,6 +30,7 @@ class SingleEventStream<T>(
 
     private val signal: MutableStateFlow<Int> = MutableStateFlow(0)
 
+    //TODO improvement: make the queue limited via a constructor parameter.
     private var eventsQueue: List<T> = listOf()
 
     private val eventsQueueLock = Mutex()
