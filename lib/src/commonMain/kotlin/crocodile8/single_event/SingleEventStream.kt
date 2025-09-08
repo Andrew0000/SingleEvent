@@ -12,9 +12,9 @@ import kotlinx.coroutines.sync.withLock
  * Key features:
  * - It is guaranteed that a pushed even will not be lost.
  * - Many events may be queued until someone collects them.
- * - New event can bu pushed from any thread / dispatcher.
+ * - New event can be pushed from any thread / dispatcher.
  * - Collection may be happening from any thread / dispatcher.
- * - Order of events is no guaranteed if pushed from multiple threads / dispatchers.
+ * - Order of events is not guaranteed if pushed from multiple threads / dispatchers.
  *
  * Limitations:
  * - Only 1 collector at a time is supported.
