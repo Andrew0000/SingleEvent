@@ -24,9 +24,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.singleeventstream.ui.theme.SingleEventStreamTheme
-import kotlinx.coroutines.delay
+import crocodile8.single_event.SingleEventStream
+import crocodile8.single_event.asReadOnly
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlin.concurrent.atomics.AtomicInt
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.concurrent.atomics.incrementAndFetch
@@ -62,18 +62,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-    LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.events2.collect {
-                Log.i("test_", "received: $it")
+            viewModel.events.collect {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
+
     Column(
         modifier = modifier
     ) {
@@ -99,14 +95,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 text = "Click me x2",
             )
         }
-
-        Button(
-            onClick = viewModel::onClick2
-        ) {
-            Text(
-                text = "Click and rotate",
-            )
-        }
     }
 }
 
@@ -114,24 +102,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 class MainViewModel : ViewModel() {
 
     private val _events = SingleEventStream<Any>(viewModelScope)
-    val events = _events.asCollector()
-
-    private val _events2 = SingleEventStream<Any>(viewModelScope)
-    val events2 = _events2.asCollector()
+    val events = _events.asReadOnly()
 
     private val clickCounter = AtomicInt(0)
 
     fun onClick() {
         _events.push("Something: ${clickCounter.incrementAndFetch()}")
-    }
-
-    fun onClick2() {
-        viewModelScope.launch {
-            repeat(2000) {
-                delay(1)
-                _events2.push("$it")
-            }
-        }
     }
 }
 
