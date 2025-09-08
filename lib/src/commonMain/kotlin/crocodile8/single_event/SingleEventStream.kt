@@ -36,29 +36,16 @@ class SingleEventStream<T>(
     private val eventsQueueLock = Mutex()
 
     /**
-     * Adds a new value to the underlying event queue.
+     * Adds [newValue] to the underlying event queue.
      * This operation may be asynchronous, it depends on the [scope].
-     *
-     * Getter always returns null.
-     */
-    override var value: T?
-        set(value) {
-            if (value != null) {
-                scope.launch {
-                    eventsQueueLock.withLock {
-                        eventsQueue += value
-                        signal.value = ++signal.value
-                    }
-                }
-            }
-        }
-        get() = null
-
-    /**
-     * Adds a new value to the underlying event queue. See [value].
      */
     override fun push(newValue: T) {
-        value = newValue
+        scope.launch {
+            eventsQueueLock.withLock {
+                eventsQueue += newValue
+                signal.value = ++signal.value
+            }
+        }
     }
 
     /**

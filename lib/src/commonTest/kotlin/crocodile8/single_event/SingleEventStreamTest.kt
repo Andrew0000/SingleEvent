@@ -26,9 +26,9 @@ class SingleEventStreamTest {
         val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
-        stream.value = 1
-        stream.value = 2
-        stream.value = 3
+        stream.push(1)
+        stream.push(2)
+        stream.push(3)
 
         testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
@@ -45,16 +45,16 @@ class SingleEventStreamTest {
         val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
-        stream.value = 1
-        stream.value = 2
-        stream.value = 3
+        stream.push(1)
+        stream.push(2)
+        stream.push(3)
 
         testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
 
-        stream.value = 4
-        stream.value = 5
-        stream.value = 6
+        stream.push(4)
+        stream.push(5)
+        stream.push(6)
 
         val job2 = launch(testDispatcher) {
             stream.collect { result += it }
@@ -75,9 +75,9 @@ class SingleEventStreamTest {
         val job1 = launch(testDispatcher) {
             stream.collect { result += it }
         }
-        stream.value = 1
-        stream.value = 2
-        stream.value = 3
+        stream.push(1)
+        stream.push(2)
+        stream.push(3)
 
         testDispatcher.scheduler.advanceUntilIdle()
         job1.cancel()
@@ -106,18 +106,18 @@ class SingleEventStreamTest {
             val lock = Channel<Unit>(capacity = 100)
             val result = mutableListOf<Int>()
 
-            stream.value = 1
-            stream.value = 2
+            stream.push(1)
+            stream.push(2)
             val job1 = launch(testDispatcher) {
                 stream.collect { result += it }
             }
             launch(asyncDispatcher2) {
-                stream.value = 3
-                stream.value = 32
+                stream.push(3)
+                stream.push(32)
                 lock.send(Unit)
             }
-            stream.value = 4
-            stream.value = 42
+            stream.push(4)
+            stream.push(42)
 
             job1.cancel()
 
@@ -126,10 +126,10 @@ class SingleEventStreamTest {
             }
 
             launch(asyncDispatcher3) {
-                stream.value = 5
+                stream.push(5)
                 lock.send(Unit)
             }
-            stream.value = 6
+            stream.push(6)
 
             repeat(2) {
                 lock.receive()

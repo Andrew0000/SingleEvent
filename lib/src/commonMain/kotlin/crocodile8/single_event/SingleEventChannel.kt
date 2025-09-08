@@ -16,23 +16,12 @@ internal class SingleEventChannel<T>(
     private val _eventFlow = Channel<T>(capacity = Channel.BUFFERED)
     internal val eventFlow = _eventFlow.receiveAsFlow()
 
-    override var value: T?
-        set(value) {
-            if (value != null) {
-                _eventFlow.trySend(value)
-                /*
-                scope.launch {
-                    _eventFlow.send(value)
-                }*/
-            }
-        }
-        get() = null
-
-    /**
-     * Adds a new value to the underlying event queue. See [value].
-     */
     override fun push(newValue: T) {
-        value = newValue
+        _eventFlow.trySend(newValue)
+        /*
+        scope.launch {
+            _eventFlow.send(value)
+        }*/
     }
 
     override suspend fun collect(onEvent: (T) -> Unit) {
