@@ -15,6 +15,8 @@ import kotlinx.coroutines.sync.withLock
  * - New event can bu pushed from any thread / dispatcher.
  * - Collection may be happening from any thread / dispatcher.
  * - Order of events is no guaranteed if pushed from multiple threads / dispatchers.
+ *
+ * Limitations:
  * - Only 1 collector at a time is supported.
  *
  * History of the question and other solutions:
