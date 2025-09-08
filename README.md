@@ -1,4 +1,5 @@
 Implementation of the "One-Time Event" pattern for Android and Kotlin Multiplatform.  
+Typical usage is ViewModel with Jetpack Compose / Compose Multiplatform.  
 
 **History of the question and other solutions**  
 Why Channels may be unreliable:  
