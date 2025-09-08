@@ -18,6 +18,7 @@ class SingleEventStreamTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val stream = SingleEventStream<Int>(CoroutineScope(testDispatcher))
+    // private val stream = SingleEventChannel<Int>(CoroutineScope(testDispatcher))
 
     @Test
     fun `When events sent - they are received`() = runTest {
@@ -112,9 +113,11 @@ class SingleEventStreamTest {
             }
             launch(asyncDispatcher2) {
                 stream.value = 3
+                stream.value = 32
                 lock.send(Unit)
             }
             stream.value = 4
+            stream.value = 42
 
             job1.cancel()
 
@@ -134,7 +137,7 @@ class SingleEventStreamTest {
             job2.cancelAndJoin()
 
             assertEquals(
-                listOf(1, 2, 3, 4, 5, 6),
+                listOf(1, 2, 3, 4, 5, 6, 32, 42),
                 result.sorted()
             )
         }
