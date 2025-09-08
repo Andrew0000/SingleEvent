@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SingleEventStream"
 include(":app")
+include(":lib")
