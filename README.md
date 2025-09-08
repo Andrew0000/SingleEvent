@@ -15,6 +15,30 @@ How and why it works:
 Events are stored in the internal queue. Collector automatically and atomically consumes the queue.
 It's partially similar to what Google recommends (notify about the consumption) but automatic.
 
+**Usage example**  
+The library is not published. Basically it's just 1 class so you can copy it to your project.  
+Typically in ViewModel:
+```
+private val _events = SingleEventStream<Any>(viewModelScope)
+val events = _events.asReadOnly()
+
+fun onClick() {
+    _events.push("Something")
+}
+```
+
+Typically in a Composable:
+```
+val lifecycleOwner = LocalLifecycleOwner.current
+LaunchedEffect(Unit) {
+    lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.events.collect {
+            // Handle the event here
+        }
+    }
+}
+```
+
 History of the question and other solutions:  
 https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
 https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
