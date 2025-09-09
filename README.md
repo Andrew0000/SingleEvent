@@ -12,6 +12,8 @@ More inforamation:
 
 ViewModel: One-off event antipatterns  
 https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
+
+The idea about Main.immediate  
 https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295
 
 ViewModel: Events as State are an Antipattern  
