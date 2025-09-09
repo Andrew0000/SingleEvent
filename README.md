@@ -8,7 +8,7 @@ Outdated as of 2025.
 
 ### Kotlin Channels   
 Solutions based on Channels have a limitation: they must operate on Main / Main.immediate scheduler to be reliable.  
-More inforamation:
+More information:
 
 [ViewModel: One-off event antipatterns](https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95)    
 > A Channel doesn’t guarantee the delivery and processing of the events. Therefore, events can be lost, leaving the UI in an inconsistent state.  
