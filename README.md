@@ -42,6 +42,9 @@ It's partially similar to what Google recommends (notify about the consumption),
 # Usage example  
 The library is not published. Basically, it's just 1 class, so you can copy it to your project.  
 https://github.com/Andrew0000/SingleEvent/blob/main/lib/src/commonMain/kotlin/crocodile8/single_event/SingleEventStream.kt  
+Tests:  
+https://github.com/Andrew0000/SingleEvent/blob/main/lib/src/commonTest/kotlin/crocodile8/single_event/SingleEventStreamTest.kt  
+
 Typically in ViewModel:  
 ```
 private val _events = SingleEventStream<Any>(viewModelScope)
