@@ -2,14 +2,18 @@ Implementation of the "One-Time Event" pattern for Android and Kotlin Multiplatf
 Typical usage is ViewModel with Jetpack Compose / Compose Multiplatform.  
 
 **History of the question and other solutions**  
-Why Channels may be unreliable:  
-https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
+1. Kotlin Channels  
+Solutions based on Channels have a limitation: they must operate on Main / Main.immediate scheduler to be reliable.  
+More inforamation:  
 https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
+https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295  
 
+2. State + notify about consumption  
+It works but requires additional code which can be tedious.  
 Google's approach (explicitly consume events):  
 https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates  
 
-**SingleEventStream**  
+**This soultion: SingleEventStream**  
 Key features:
 - It is guaranteed that a pushed even will not be lost.
 - Many events may be queued until someone collects them.
