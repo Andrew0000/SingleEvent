@@ -10,19 +10,19 @@ Outdated as of 2025.
 Solutions based on Channels have a limitation: they must operate on Main / Main.immediate scheduler to be reliable.  
 More inforamation:
 
-ViewModel: One-off event antipatterns  
-https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95  
+[ViewModel: One-off event antipatterns](https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95)    
+> A Channel doesn’t guarantee the delivery and processing of the events. Therefore, events can be lost, leaving the UI in an inconsistent state.  
 
-The idea about Main.immediate  
-https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295
+[The idea about Main.immediate](https://github.com/Kotlin/kotlinx.coroutines/issues/2886#issuecomment-901188295)  
+> The most trivial solution is to rely on the specifics of how view lifecycle works in Android and on Dispatchers.Main.immediate.  
 
-ViewModel: Events as State are an Antipattern  
-https://proandroiddev.com/viewmodel-events-as-state-are-an-antipattern-35ff4fbc6fb6  
+[ViewModel: Events as State are an Antipattern](https://proandroiddev.com/viewmodel-events-as-state-are-an-antipattern-35ff4fbc6fb6)  
+> Exposing events from the VM does not mean that the VM is not the source of truth.
 
 ### State + notify about consumption  
 It works but requires additional code which can be tedious.  
-Google's approach (explicitly consume events):  
-https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates  
+[Google's approach (explicitly consume events)](https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates)  
+> UI needs to notify the ViewModel to trigger another state update when the message has been shown on the screen.  
 
 ### SingleEventStream (this soultion, middle ground)  
 Key features:
