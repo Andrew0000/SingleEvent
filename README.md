@@ -36,7 +36,7 @@ Limitations:
 - Only 1 collector at a time is supported.
 
 How and why it works:  
-Events are stored in the internal queue. Collector automatically and atomically consumes the queue.
+Events are stored in the internal queue. Any access to the queue happens under the Mutex. Any event that was not consumed waits in the queue. Collector automatically and atomically consumes the queue.
 It's partially similar to what Google recommends (notify about the consumption), but automatic.
 
 # Usage example  
